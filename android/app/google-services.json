@@ -1,0 +1,118 @@
+{
+  "project_info": {
+    "project_number": "584162305733",
+    "project_id": "vialtic-ecmr",
+    "storage_bucket": "vialtic-ecmr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584162305733:android:49c312b33a23753237b2ac",
+        "android_client_info": {
+          "package_name": "com.example.vialtic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "584162305733-2j4lf0p49e1knjvfnueh6l98gluu3cvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnH6SjepFlROh_g_EU2SBuPwv_7OK9WOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "584162305733-2j4lf0p49e1knjvfnueh6l98gluu3cvl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "584162305733-tn3hklr4o0gou2ie5mj6lcf5392fjvs2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vialtic"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584162305733:android:d1c622c0425b319c37b2ac",
+        "android_client_info": {
+          "package_name": "com.example.vialticecmr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "584162305733-2j4lf0p49e1knjvfnueh6l98gluu3cvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnH6SjepFlROh_g_EU2SBuPwv_7OK9WOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "584162305733-2j4lf0p49e1knjvfnueh6l98gluu3cvl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "584162305733-tn3hklr4o0gou2ie5mj6lcf5392fjvs2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vialtic"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584162305733:android:a9bbca9acc0b9b9537b2ac",
+        "android_client_info": {
+          "package_name": "com.vialtic.ecmr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "584162305733-2j4lf0p49e1knjvfnueh6l98gluu3cvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnH6SjepFlROh_g_EU2SBuPwv_7OK9WOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "584162305733-2j4lf0p49e1knjvfnueh6l98gluu3cvl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "584162305733-tn3hklr4o0gou2ie5mj6lcf5392fjvs2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vialtic"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
