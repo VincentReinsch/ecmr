@@ -5,10 +5,10 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:vialticecmr/utils/MyVariables.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:vialticecmr/utils/MyVariables.dart';
 
 class PDFScreen extends StatefulWidget {
   final String? path;
@@ -48,7 +48,6 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    print(' widget.path${widget.path}');
     return Scaffold(
       appBar: AppBar(
         title: const Text("Lettre de voiture"),
@@ -82,22 +81,17 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
               setState(() {
                 errorMessage = error.toString();
               });
-              print(error.toString());
             },
             onPageError: (page, error) {
               setState(() {
                 errorMessage = '$page: ${error.toString()}';
               });
-              print('$page: ${error.toString()}');
             },
             onViewCreated: (PDFViewController pdfViewController) {
               _controller.complete(pdfViewController);
             },
-            onLinkHandler: (String? uri) {
-              print('goto uri: $uri');
-            },
+            onLinkHandler: (String? uri) {},
             onPageChanged: (int? page, int? total) {
-              print('page change: $page/$total');
               setState(() {
                 currentPage = page;
               });

@@ -17,6 +17,7 @@ import 'package:vialticecmr/model/ordretransport.dart';
 import 'package:vialticecmr/screen/AuthScreen.dart';
 import 'package:vialticecmr/screen/ExploitationScreen.dart';
 import 'package:vialticecmr/screen/MyAccountScreen.dart';
+import 'package:vialticecmr/screen/OrdreTransportLandingScreen.dart';
 import 'package:vialticecmr/screen/OrdreTransportScreen.dart';
 import 'package:vialticecmr/screen/TourneeScreen.dart';
 import 'package:vialticecmr/screen/landing.dart';
@@ -54,11 +55,11 @@ Future<void> main() async {
     sound: true,
   );
   //myFirebase().initFirebase();
-  print('ok');
+
   myFirebase().initFirebaseMessaging();
   final cron = Cron();
 
-  cron.schedule(Schedule.parse('*/5 * * * *'), () async {
+  cron.schedule(Schedule.parse('*/1 * * * *'), () async {
     await Network().synchronise();
 
     OrdreTransport ordre = OrdreTransport(ordretransportId: 0);
@@ -96,6 +97,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final fcmToken = await FirebaseMessaging.instance.getToken();
   MyVariables().setToken(fcmToken!);
+
   runApp(MyApp(theme: theme!));
 }
 

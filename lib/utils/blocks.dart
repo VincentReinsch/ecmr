@@ -39,9 +39,7 @@ List<Widget> piedpageconnected(context) {
     IconButton(
         icon: Icon(Icons.circle,
             color: myService.getConnected == true ? Colors.green : Colors.red),
-        onPressed: () {
-          print(myService.getMyObject.getBaseUrl);
-        }),
+        onPressed: () {}),
     Text(MyVariables().infoversion),
     Text(
         '${myService.getMyObject.getFirstName} ${myService.getMyObject.getLastName}'),

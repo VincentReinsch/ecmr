@@ -101,6 +101,7 @@ class SQLHelper {
           "tracteur_immat"	TEXT,
         	"remorque_immat"	TEXT,	
           "additionnalFieldsTxt"	TEXT,
+          "is_clonable"	INTEGER DEFAULT 0,
           PRIMARY KEY("destot_id"))""");
     await database.execute("""
         CREATE TABLE "ordre_transport" 
@@ -142,6 +143,7 @@ class SQLHelper {
           "is_tournee" INTEGER,
           "tournee_id" INTEGER,
           "sens_enl" INTEGER,
+          "is_clonable"	INTEGER DEFAULT 0,
           PRIMARY KEY("ordretransport_id"));
         """);
   }
@@ -154,7 +156,7 @@ class SQLHelper {
 
     var retour = await sql.openDatabase(
       'demo2.db',
-      version: 8,
+      version: 9,
       onUpgrade: (sql.Database db, int oldVersion, int newVersion) async {
         await createTables(db);
       },
@@ -265,7 +267,7 @@ class SQLHelper {
 
   static setLastLogin(String json) async {
     final db = await SQLHelper.db();
-    print("debug2");
+
     await db.insert('parameter', {'key': 'last_login', 'value': json},
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
   }

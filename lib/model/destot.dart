@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:vialticecmr/model/abstract_model.dart';
 import 'package:vialticecmr/utils/sqlHelper.dart';
-import 'dart:convert';
 
 import 'ordretransport.dart';
 
@@ -40,7 +41,6 @@ class DestOtAdditionnalField {
 String dOAIToJson(List<DestOtAdditionnalField> value) {
   var data = [];
   for (var element in value) {
-    print(dOAIfromJson(element));
     data.add(dOAIfromJson(element));
   }
 
@@ -67,6 +67,7 @@ class DestOt extends AbstractModel {
   double _hectolitre = 0.00;
   double _metre = 0.00;
   bool _isDeleted = false;
+  bool _isClonable = false;
   String _dateEnlevement = '00-00-00 00:00:00';
   String _dateLivraison = '0000-00-00 00:00:00';
 
@@ -132,6 +133,7 @@ class DestOt extends AbstractModel {
     double hectolitre = 0.00,
     double metre = 0.00,
     bool isDeleted = false,
+    bool isClonable = false,
     String dateEnlevement = '00-00-00 00:00:00',
     String dateLivraison = '0000-00-00 00:00:00',
     String refLiv = '',
@@ -181,6 +183,7 @@ class DestOt extends AbstractModel {
     _hectolitre = hectolitre;
     _metre = metre;
     _isDeleted = isDeleted;
+    _isClonable = isClonable;
     _dateEnlevement = dateEnlevement;
     _dateLivraison = dateLivraison;
 
@@ -237,6 +240,7 @@ class DestOt extends AbstractModel {
   double get getHectolitre => _hectolitre;
   double get getMetre => _metre;
   bool get getIsDeleted => _isDeleted;
+  bool get getIsClonable => _isClonable;
   String get getDateEnlevement => _dateEnlevement;
   String get getDateLivraison => _dateLivraison;
 
@@ -299,6 +303,7 @@ class DestOt extends AbstractModel {
 
   set metre(double value) => _metre = value;
   set isDeleted(bool value) => _isDeleted = value;
+  set isClonable(bool value) => _isClonable = value;
   set dateEnlevement(String value) => _dateEnlevement = value;
   set dateLivraison(String value) => _dateLivraison = value;
 
@@ -360,6 +365,9 @@ class DestOt extends AbstractModel {
     _hectolitre = double.parse(jsonData['hectolitre']);
     _metre = double.parse(jsonData['metre']);
     _isDeleted = jsonData['is_deleted'] == '0' ? false : true;
+
+    _isClonable = jsonData['is_clonable'] == 'true';
+
     _dateEnlevement = jsonData['date_enlevement'];
     _dateLivraison = jsonData['date_livraison'];
 
@@ -425,6 +433,7 @@ class DestOt extends AbstractModel {
     _hectolitre = jsonData['hectolitre'];
     _metre = jsonData['metre'];
     _isDeleted = jsonData['is_deleted'] == '0' ? false : true;
+    _isClonable = jsonData['is_clonable'] == 0 ? false : true;
     _dateEnlevement = jsonData['date_enlevement'];
     _dateLivraison = jsonData['date_livraison'];
 
@@ -494,6 +503,7 @@ class DestOt extends AbstractModel {
     data['hectolitre'] = _hectolitre;
     data['metre'] = _metre;
     data['is_deleted'] = _isDeleted;
+    data['is_clonable'] = _isClonable;
     data['date_enlevement'] = _dateEnlevement;
     data['date_livraison'] = _dateLivraison;
 

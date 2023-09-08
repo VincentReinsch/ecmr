@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -51,6 +52,7 @@ class OrdreTransport extends AbstractModel {
   int _tourneeId = 0;
   int _sensEnl = 0;
   bool _isDeleted = false;
+  bool _isClonable = false;
   int _nbDests = 0;
   List<DestOt> _destots = [];
 
@@ -87,6 +89,7 @@ class OrdreTransport extends AbstractModel {
       String destFinalCity = '',
       String destFinalCountry = '',
       bool isDeleted = false,
+      bool isClonable = false,
       int nbDests = 0,
       int tourneeId = 0,
       int sensEnl = 0
@@ -126,6 +129,7 @@ class OrdreTransport extends AbstractModel {
     _destFinalCity = destFinalCity;
     _destFinalCountry = destFinalCountry;
     _isDeleted = isDeleted;
+    _isClonable = isClonable;
     _nbDests = nbDests;
     _destots = destots;
     _tourneeId = tourneeId;
@@ -168,6 +172,7 @@ class OrdreTransport extends AbstractModel {
   int get getSensEnl => _sensEnl;
   String get getDestFinalCountry => _destFinalCountry;
   bool get getIsDeleted => _isDeleted;
+  bool get getIsClonable => _isClonable;
   int get getNbDests => _nbDests;
   List<DestOt> get destots => _destots;
 
@@ -207,6 +212,7 @@ class OrdreTransport extends AbstractModel {
   set destFinalCity(String value) => _destFinalCity = value;
   set destFinalCountry(String value) => _destFinalCountry = value;
   set isDeleted(bool value) => _isDeleted = value;
+  set isClonable(bool value) => _isClonable = value;
   set nbDdests(int value) => _nbDests = value;
 
   set tourneeId(int value) => _tourneeId = value;
@@ -249,6 +255,7 @@ class OrdreTransport extends AbstractModel {
     _destFinalCity = json['dest_final_city'].toString();
     _destFinalCountry = json['dest_final_country'].toString();
     _isDeleted = json['is_deleted'] == '1' ? true : false;
+    _isClonable = json['is_clonable'] == '1' ? true : false;
     _nbDests = int.parse(json['nb_dests']);
     _tourneeId = json['tournee_id'] != null ? int.parse(json['tournee_id']) : 0;
     _sensEnl = json['sens_enl'] != null ? int.parse(json['sens_enl']) : 0;
@@ -292,6 +299,7 @@ class OrdreTransport extends AbstractModel {
     data['dest_final_city'] = _destFinalCity;
     data['dest_final_country'] = _destFinalCountry;
     data['is_deleted'] = _isDeleted;
+    data['is_clonable'] = _isClonable;
     data['nb_dests'] = _nbDests;
 
     data['tournee_id'] = _tourneeId;
@@ -335,6 +343,7 @@ class OrdreTransport extends AbstractModel {
     _destFinalCity = json['dest_final_city'];
     _destFinalCountry = json['dest_final_country'];
     _isDeleted = json['is_deleted'] == '1' ? true : false;
+    _isClonable = json['is_clonable'] == '1' ? true : false;
     _nbDests = json['nb_dests'];
     _tourneeId = json['tournee_id'];
     _sensEnl = json['sens_enl'];
@@ -416,7 +425,6 @@ class OrdreTransport extends AbstractModel {
     var myVariables = MyVariables();
     dynamic currentContext = myVariables.getMyCurrentContext;
 
-    //print(currentContext.widget.toString());
     if (currentContext != null &&
         currentContext.widget.toString() == 'ExploitationScreen') {
       Navigator.pushNamedAndRemoveUntil(
@@ -435,6 +443,7 @@ class OrdreTransport extends AbstractModel {
     List<Map<String, dynamic>> destots =
         await SQLHelper.getDestOts(ordretransportId);
     List statusArr = [];
+    var is_clonable = 0;
     for (var element in destots) {
       var datasAdd = [
         element['enl_arrivee'] != '0000-00-00 00:00:00',
@@ -442,6 +451,10 @@ class OrdreTransport extends AbstractModel {
         element['liv_arrivee'] != '0000-00-00 00:00:00',
         element['liv_depart'] != '0000-00-00 00:00:00',
       ];
+
+      if (element['is_clonable'] == 1) {
+        is_clonable = 1;
+      }
       statusArr.add(datasAdd);
     }
     DateTime now = DateTime.now();
@@ -450,7 +463,8 @@ class OrdreTransport extends AbstractModel {
 
     await update({
       'ordretransport_id': ordretransportId,
-      'status': json.encode(statusArr)
+      'status': json.encode(statusArr),
+      'is_clonable': is_clonable
     });
   }
 

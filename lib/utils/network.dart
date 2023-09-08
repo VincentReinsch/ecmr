@@ -3,22 +3,37 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:image/image.dart' as imglib;
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
 import 'package:vialticecmr/model/admin_user.dart';
-import 'package:vialticecmr/model/api_response.dart';
 import 'package:vialticecmr/model/api_error.dart';
-
+import 'package:vialticecmr/model/api_response.dart';
 import 'package:vialticecmr/model/user.dart';
 import 'package:vialticecmr/utils/MyVariables.dart';
-
 import 'package:vialticecmr/utils/sqlHelper.dart';
-import 'package:image/image.dart' as imglib;
 //import 'package:device_info_plus/device_info_plus.dart';
 
 class Network {
   final MyVariables _myVariables = MyVariables();
+  Future<String> cloneTrajet({required int destot_id}) async {
+    final response = await http.post(
+      Uri.parse(_myVariables.getMyObject.getBaseUrl + 'appliecmr/clonage'),
+      headers: <String, String>{
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: <String, String>{
+        'user_login': _myVariables.getMyObject.getLogin,
+        'user_password': _myVariables.getMyObject.getPassword,
+        'tiers_id': _myVariables.getMyObject.getTiersId.toString(),
+        'destot_id': destot_id.toString()
+      },
+    );
+
+    var jsonResponse = json.decode(response.body);
+
+    return response.body;
+  }
 
   Future<Map<dynamic, dynamic>> login(
       {required String login, required String password}) async {
@@ -78,10 +93,8 @@ class Network {
       response.reasonPhrase;
       myVariables.setConnected(true);
     } on SocketException {
-      print('pas de connection');
       myVariables.setConnected(false);
     } catch (e) {
-      print('pas de connection');
       // TODO: handle all other exceptions just in case
       myVariables.setConnected(false);
     }
@@ -92,19 +105,17 @@ class Network {
       {required String login, required String password}) async {
     var myVariables = MyVariables();
 
+    int timeout = 5;
+
     ApiResponse apiResponse = ApiResponse();
-    print('${myVariables.getMyObject.getBaseUrl}Appliecmr/getNameTiers/');
-    print({
-      'user_login': login,
-      'user_password': password,
-      'tiers_id': myVariables.getMyObject.getTiersId.toString(),
-    });
+
     try {
       final response = await http.post(
           Uri.parse(
               '${myVariables.getMyObject.getBaseUrl}Appliecmr/getNameTiers/'),
           headers: <String, String>{
             'Content-Type': 'application/x-www-form-urlencoded',
+            'Access-Control-Allow-Origin': '*',
           },
           body: <String, String>{
             'user_login': login,
@@ -139,18 +150,16 @@ class Network {
       myVariables.setConnected(true);
     } on TimeoutException {
       // handle timeout
-      print('timeout');
+
       apiResponse.setApiError = ApiError(error: "Server error. Please retry");
     } on SocketException {
-      print('pas de connection 1---');
       apiResponse.setApiError = ApiError(error: "Server error. Please retry");
       myVariables.setConnected(false);
+    } on Error catch (e) {
     } catch (e) {
-      print('pas de connection ---2');
       myVariables.setConnected(false);
 // TODO: handle all other exceptions just in case
     }
-
     return apiResponse;
   }
 
@@ -159,7 +168,6 @@ class Network {
     if (myVariables.getMyObject.getBaseUrl == '') {
       return [];
     }
-    print('recherche tournée');
 
     final httpsUri = Uri(
       scheme: 'http',
@@ -176,7 +184,7 @@ class Network {
       var formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
       lastUpd = formatter.format(now);
     }
-    print(lastUpd);
+
     var liste = [];
     try {
       final response = await http.post(httpsUri, headers: <String, String>{
@@ -188,7 +196,6 @@ class Network {
         'last_upd': lastUpd,
       });
 
-      print(response.body);
       dynamic jsonResponse = {};
 
       try {
@@ -197,8 +204,6 @@ class Network {
 
       if (jsonResponse['objects'] != null) {
         jsonResponse['objects'].forEach((song, test) async => {
-              print(song),
-              print(test),
               liste.add(test),
             });
 
@@ -208,10 +213,8 @@ class Network {
       //
       return liste;
     } on SocketException {
-      print('pas de connection21');
       myVariables.setConnected(false);
     } catch (e) {
-      print('pas de connection22');
       myVariables.setConnected(false);
       // TODO: handle all other exceptions just in case
     }
@@ -242,7 +245,6 @@ class Network {
         'tiers_id': myVariables.getMyObject.getTiersId.toString(),
         'last_upd': await SQLHelper.getParameter('last_call'),
       });
-      print('avant' + await SQLHelper.getParameter('last_call'));
 
       dynamic jsonResponse = {};
       try {
@@ -257,19 +259,17 @@ class Network {
         DateTime now = DateTime.now();
         var formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
         String formattedDate = formatter.format(now);
-        print('formattedDate$formattedDate');
+
         await SQLHelper.setParameter('last_call', formattedDate);
-        print('apres' + await SQLHelper.getParameter('last_call'));
+
         return liste;
       }
       myVariables.setConnected(true);
       //
       return liste;
     } on SocketException {
-      print('pas de connection11');
       myVariables.setConnected(false);
     } catch (e) {
-      print('pas de connection12');
       myVariables.setConnected(false);
       // TODO: handle all other exceptions just in case
     }
@@ -306,7 +306,6 @@ class Network {
         body: body,
       );
       myVariables.setConnected(true);
-      print(test.body);
     }
   }
 
@@ -331,8 +330,7 @@ class Network {
       'device_name': 'androidInfo.model',
       'appli_name': 'vialticecmr'
     };
-    print(body);
-    print('${myVariables.getMyObject.getBaseUrl}Appliecmr/sendFirebaseToken/');
+
     try {
       await http.post(
         Uri.parse(
@@ -345,16 +343,14 @@ class Network {
 
       await SQLHelper.setLastDate();
     } on SocketException {
-      print('pas de connection pur furebase1');
     } catch (e) {
-      print('pas de connection2 furebase');
-
       // TODO: handle all other exceptions just in case
     }
   }
 
   Future synchronise() async {
     var myVariables = MyVariables();
+    print('synchronisation');
     if (myVariables.getMyObject.getBaseUrl != '' &&
         myVariables.getMyObject.getTiersId.toString() != 0) {
       String lastDate = await SQLHelper.gettLastDate();
@@ -373,6 +369,7 @@ class Network {
 
       var ordres = {};
       for (var element in response) {
+        print(element['ordretransport_id']);
         final dests = await SQLHelper.getDestOts(element['ordretransport_id']);
         List destOts = [];
         for (var destot in dests) {
@@ -424,15 +421,11 @@ class Network {
         myVariables.setConnected(true);
         await SQLHelper.setLastDate();
       } on SocketException {
-        print('pas de connection1');
         myVariables.setConnected(false);
       } catch (e) {
-        print('pas de connection2');
         myVariables.setConnected(false);
         // TODO: handle all other exceptions just in case
       }
-    } else {
-      print('pas de synchro à faire');
-    }
+    } else {}
   }
 }

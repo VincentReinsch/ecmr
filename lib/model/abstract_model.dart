@@ -21,19 +21,16 @@ class AbstractModel {
     var primaryField = datas[primary];
     datas.remove(primary);
     try {
-      final id =
-          await SQLHelper.update(table, primaryField, datas, primary);
+      final id = await SQLHelper.update(table, primaryField, datas, primary);
       return id;
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
     return 0;
   }
 
   Future<List<Map<String, dynamic>>> getOne(int id) async {
     final db = await SQLHelper.db();
-    var retour = db.query(table,
-        where: "$primary = ?", whereArgs: [id], limit: 1);
+    var retour =
+        db.query(table, where: "$primary = ?", whereArgs: [id], limit: 1);
 
     return retour;
   }

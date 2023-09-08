@@ -2,18 +2,19 @@ import 'dart:io';
 
 import 'package:cunning_document_scanner/cunning_document_scanner.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hand_signature/signature.dart';
-import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:vialticecmr/model/destot.dart';
 import 'package:vialticecmr/model/ordretransport.dart';
 import 'package:vialticecmr/screen/SignatureDestotScreen.dart';
 import 'package:vialticecmr/screen/TourneeScreen.dart';
 import 'package:vialticecmr/screen/TrajetinfosScreen.dart';
+import 'package:vialticecmr/screen/loadingCloneScreen.dart';
 import 'package:vialticecmr/screen/pdfViewer.dart';
 import 'package:vialticecmr/utils/MyVariables.dart';
-import 'package:vialticecmr/model/destot.dart';
-import 'package:intl/intl.dart';
 import 'package:vialticecmr/utils/blocks.dart';
 import 'package:vialticecmr/utils/localisation.dart' as localisation;
 
@@ -32,54 +33,6 @@ class OrdreTransportParams {
   final int ordretransportId;
 
   OrdreTransportParams(this.ordretransportId);
-}
-
-class OrdreTransportLandingScreen extends StatefulWidget {
-  final int ordretransportId;
-
-  const OrdreTransportLandingScreen({Key? key, required this.ordretransportId})
-      : super(key: key);
-
-  @override
-  _OrdreTransportLandingScreenState createState() =>
-      _OrdreTransportLandingScreenState();
-}
-
-class _OrdreTransportLandingScreenState
-    extends State<OrdreTransportLandingScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    getTrajetInfos();
-  }
-
-  getTrajetInfos() async {
-    var ordre = OrdreTransport(ordretransportId: widget.ordretransportId);
-    ordre = await ordre.getItem();
-    if (ordre.getOrdretransportId == 0) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const NoOrdreTransportScreen(),
-        ),
-      );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OrdreTransportScreen(ordretransport: ordre),
-        ),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
 }
 
 class TrajetScreen extends StatefulWidget {
@@ -231,6 +184,7 @@ class _TrajetScreenState extends State<TrajetScreen> {
             break;
         }
       });
+      await Network().synchronise();
     }
   }
 
@@ -312,6 +266,7 @@ class _TrajetScreenState extends State<TrajetScreen> {
         ],
       ));
     }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -644,36 +599,6 @@ class _TrajetScreenState extends State<TrajetScreen> {
   }
 }
 
-class NoOrdreTransportScreen extends StatefulWidget {
-  const NoOrdreTransportScreen({Key? key}) : super(key: key);
-
-  @override
-  _NoOrdreTransportScreenState createState() => _NoOrdreTransportScreenState();
-}
-
-class _NoOrdreTransportScreenState extends State<NoOrdreTransportScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white70,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-          ),
-          onPressed: () {
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/home', ModalRoute.withName('/home'));
-          },
-        ),
-        title: const Text('retour à la liste'),
-      ),
-      body: const Text('Cet ordre de transport n\'existe pas'),
-      persistentFooterButtons: piedpageconnected(context),
-    );
-  }
-}
-
 class OrdreTransportScreen extends StatefulWidget {
   final OrdreTransport ordretransport;
 
@@ -686,9 +611,14 @@ class OrdreTransportScreen extends StatefulWidget {
 
 class _OrdreTransportScreenState extends State<OrdreTransportScreen> {
   String landscapePathPdf = '';
+  String res_clonage = '';
   @override
   void initState() {
     super.initState();
+  }
+
+  onPressClone(int getDestotId) {
+    Network().cloneTrajet(destot_id: getDestotId);
   }
 
   @override
@@ -699,7 +629,37 @@ class _OrdreTransportScreenState extends State<OrdreTransportScreen> {
     //Construction des onglets
     List<Tab> myTabs = [];
     for (var i = 0; i < widget.ordretransport.getNbDests; i++) {
-      myTabs.add(Tab(text: 'TR#${i + 1}'));
+      //récupération de la possibilité de cloner
+
+      if (widget.ordretransport.destots[i].getIsClonable) {
+        myTabs.add(Tab(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+              Text('TR#${i + 1}'),
+              IconButton(
+                  onPressed: () => {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.bottomToTop,
+                              child: LoadingCloneScreen(
+                                  destot_id: widget
+                                      .ordretransport.destots[i].getDestotId,
+                                  ordretransport_id: widget
+                                      .ordretransport.getOrdretransportId),
+                            )),
+                        //print('resultat clonage'),
+                        // print(res_clonage)
+                      },
+                  icon: Icon(Icons.add_box))
+            ])));
+      } else {
+        myTabs.add(Tab(text: 'TR#${i + 1}'));
+      }
+      //myTabs.add(Tab(text: 'TR#${i + 1}'));
     }
 
     myTabs.add(const Tab(text: 'Infos OT'));
@@ -817,6 +777,8 @@ class _OrdreTransportScreenState extends State<OrdreTransportScreen> {
               ? const Text('retour à la liste')
               : const Text('retour à la tournée'),
           bottom: TabBar(
+            isScrollable: true,
+            padding: EdgeInsets.all(1),
             tabs: myTabs,
           ),
         ),
