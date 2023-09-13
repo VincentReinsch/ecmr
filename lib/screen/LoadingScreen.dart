@@ -30,7 +30,7 @@ class _LoadingScreenState extends State<Loadingcreen> {
                 children: [
                   SizedBox(height: 50),
                   Center(
-                    child: Text('Enregistrement...'),
+                    child: Text('En cours...'),
                   ),
                   SizedBox(height: 50),
                   Center(

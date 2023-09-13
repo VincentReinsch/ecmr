@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:vialticecmr/model/destot.dart';
 import 'package:vialticecmr/model/ordretransport.dart';
+import 'package:vialticecmr/screen/LoadingScreen.dart';
 import 'package:vialticecmr/screen/SignatureDestotScreen.dart';
 import 'package:vialticecmr/screen/TourneeScreen.dart';
 import 'package:vialticecmr/screen/TrajetinfosScreen.dart';
@@ -338,9 +339,15 @@ class _TrajetScreenState extends State<TrajetScreen> {
                         child: const Text("Afficher la Lettre de voiture"),
                         onPressed: () {
                           if (landscapePathPdf == '') {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.bottomToTop,
+                                    child: Loadingcreen()));
                             createFileOfPdfUrl(
                                     '${myVariables.getMyObject.getBaseUrl}Appliecmr/genLDV/?destot_id=${widget.destot.getDestotId}')
                                 .then((f) {
+                              Navigator.pop(context);
                               landscapePathPdf = f;
                               Navigator.push(
                                 context,
