@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:vialticecmr/model/destot.dart';
+import 'package:vialticecmr/screen/LoadingScreen.dart';
 import 'package:vialticecmr/utils/blocks.dart';
 import 'package:vialticecmr/utils/network.dart';
 
@@ -47,7 +49,7 @@ class _TrajetInfosScreenState extends State<TrajetInfosScreen> {
         ));
       }
       Widget content = Text('');
-      print(element.getType);
+
       switch (element.getType) {
         case 'text':
         case 'numeric':
@@ -153,6 +155,7 @@ class _TrajetInfosScreenState extends State<TrajetInfosScreen> {
         height: 10.0,
       ));
     }
+    bool saving = false;
     fields.add(
       Table(children: [
         TableRow(children: [
@@ -173,12 +176,20 @@ class _TrajetInfosScreenState extends State<TrajetInfosScreen> {
               padding: const EdgeInsets.all(20.0),
             ),
             onPressed: () async => {
+              Navigator.push(
+                context,
+                PageTransition(
+                  type: PageTransitionType.bottomToTop,
+                  child: Loadingcreen(),
+                ),
+              ),
               widget.destot.setAdditionnalFields(destOtAdditionnalFields),
               widget.destot.setItem(widget.destot),
               await Network().synchronise(),
               Navigator.pop(context),
+              Navigator.pop(context),
             },
-            child: const Text(
+            child: Text(
               'Enregistrer',
               textAlign: TextAlign.center,
             ),
