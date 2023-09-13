@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:vialticecmr/model/destot.dart';
+import 'package:vialticecmr/utils/blocks.dart';
 import 'package:vialticecmr/utils/network.dart';
 
 class TrajetInfosScreen extends StatefulWidget {
@@ -44,52 +46,108 @@ class _TrajetInfosScreenState extends State<TrajetInfosScreen> {
           height: 2.0,
         ));
       }
+      Widget content = Text('');
+      print(element.getType);
+      switch (element.getType) {
+        case 'text':
+        case 'numeric':
+          content = TextFormField(
+            keyboardType: element.getType == 'numeric'
+                ? TextInputType.number
+                : TextInputType.text,
+            initialValue: element.getValue,
+            onChanged: (value) => setState(
+              () => element.setValue = value,
+            ),
+            validator: (value) => value == null || value.isEmpty
+                ? 'Veuillez saisir une valeur'
+                : null,
+            decoration: const InputDecoration(
+              hintText: '',
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey)),
+              focusedBorder:
+                  OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+            ),
+          );
+          break;
+        case 'title':
+          content = Row(children: [
+            Text(element.getName,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+          ]);
+          break;
+        case 'yesno':
+          content = Row(
+            children: [
+              SizedBox(
+                width: element.getParent != 'null' ? 10.0 : 0,
+              ),
+              Checkbox(
+                checkColor: Colors.white,
+                value: element.getValue == '1',
+                onChanged: (bool? value) {
+                  setState(() {
+                    element.setValue = element.getValue == '1' ? '0' : '1';
+                  });
+                },
+              ),
+              Text(element.getName),
+            ],
+          );
+          break;
+        case 'datetime':
+          if (element.getValue == '') {
+            content = ElevatedButton(
+              onPressed: () => {
+                setState(() {
+                  element.setValue = DateTime.now().toString();
+                })
+              },
+              child: Text(element.getName),
+            );
+          } else {
+            content = Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    element.getName +
+                        ': ' +
+                        DateFormat('dd/MM/yyyy HH:mm')
+                            .format(DateTime.parse(element.getValue)),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => {
+                      setState(() {
+                        element.setValue = '';
+                      })
+                    },
+                    child: Icon(Icons.close),
+                  ),
+                ]);
+          }
+          break;
+        case 'select':
+          List<DropdownMenuItem<String>> items =
+              getItemListFormTxt(element.getParams);
+
+          content =
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(element.getName),
+            DropdownButton<String>(
+              value: element.getValue,
+              items: items,
+              onChanged: (String? value) {
+                setState(() {
+                  element.setValue = value!;
+                });
+              },
+            )
+          ]);
+          break;
+      }
       fields.add(
-        Form(
-          child: element.getType == 'text' || element.getType == 'numeric'
-              ? TextFormField(
-                  keyboardType: element.getType == 'numeric'
-                      ? TextInputType.number
-                      : TextInputType.text,
-                  initialValue: element.getValue,
-                  onChanged: (value) => setState(
-                    () => element.setValue = value,
-                  ),
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'Veuillez saisir une valeur'
-                      : null,
-                  decoration: const InputDecoration(
-                    hintText: '',
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red)),
-                  ),
-                )
-              : element.getType == 'title'
-                  ? Row(children: [
-                      Text(element.getName,
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
-                    ])
-                  : Row(
-                      children: [
-                        SizedBox(
-                          width: element.getParent != 'null' ? 10.0 : 0,
-                        ),
-                        Checkbox(
-                          checkColor: Colors.white,
-                          value: element.getValue == '1',
-                          onChanged: (bool? value) {
-                            setState(() {
-                              element.setValue =
-                                  element.getValue == '1' ? '0' : '1';
-                            });
-                          },
-                        ),
-                        Text(element.getName),
-                      ],
-                    ),
-        ),
+        Form(child: content),
       );
       fields.add(const SizedBox(
         height: 10.0,

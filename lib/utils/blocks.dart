@@ -28,6 +28,25 @@ Row iconBlock(
   );
 }
 
+List<DropdownMenuItem<String>> getItemListFormTxt(String Texte) {
+  List items = Texte.split(';');
+  List<DropdownMenuItem<String>> retour = [
+    DropdownMenuItem<String>(
+      value: '',
+      child: Text('Valeur par défaut'),
+    ),
+  ];
+  items.forEach((element) {
+    retour.add(
+      DropdownMenuItem<String>(
+        value: element,
+        child: Text(element),
+      ),
+    );
+  });
+  return retour;
+}
+
 List<Widget> piedpageconnected(context) {
   final myService = MyVariables();
   recuperation_ordres() async {

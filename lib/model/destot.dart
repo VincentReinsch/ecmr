@@ -21,11 +21,13 @@ class DestOtAdditionnalField {
   String _name = '';
   String _type = '';
   String _value = '';
+  String _params = '';
   String _parent = '';
   DestOtAdditionnalField(Map element) {
     _id = element['id'];
     _name = element['name'];
     _type = element['type'];
+    _params = element['params'];
     _value = element['value'];
     _parent = element['parent'].toString();
   }
@@ -33,6 +35,8 @@ class DestOtAdditionnalField {
   String get getName => _name;
   String get getType => _type;
   String get getValue => _value;
+
+  String get getParams => _params;
   String get getParent => _parent;
 
   set setValue(String value) => _value = value;
@@ -53,6 +57,7 @@ Map dOAIfromJson(DestOtAdditionnalField element) {
     'name': element._name,
     'type': element._type,
     'value': element._value,
+    'params': element._params,
     'parent': element._parent
   };
   return retour;

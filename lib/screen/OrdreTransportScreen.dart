@@ -51,16 +51,6 @@ class _TrajetScreenState extends State<TrajetScreen> {
   @override
   void initState() {
     super.initState();
-    var myVariables = MyVariables();
-    createFileOfPdfUrl(
-            '${myVariables.getMyObject.getBaseUrl}Appliecmr/genLDV/?destot_id=${widget.destot.getDestotId}')
-        .then((f) {
-      try {
-        setState(() {
-          landscapePathPdf = f;
-        });
-      } catch (e) {}
-    });
   }
 
   Future<void> _show(String type, DestOt destot, bool selectTime) async {
@@ -196,6 +186,7 @@ class _TrajetScreenState extends State<TrajetScreen> {
   bool livArriveeLoading = false;
   bool livDepart = true;
   bool livDepartLoading = false;
+  var myVariables = MyVariables();
   @override
   Widget build(BuildContext context) {
     enlArrivee = widget.destot.getEnlArrivee == '0000-00-00 00:00:00';
@@ -343,21 +334,33 @@ class _TrajetScreenState extends State<TrajetScreen> {
                   padding: const EdgeInsets.all(5.0),
                   child: Column(
                     children: [
-                      landscapePathPdf != ''
-                          ? TextButton(
-                              child:
-                                  const Text("Afficher la Lettre de voiture"),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PDFScreen(path: landscapePathPdf),
-                                  ),
-                                );
-                              },
-                            )
-                          : const Text('Chargement du pdf'),
+                      TextButton(
+                        child: const Text("Afficher la Lettre de voiture"),
+                        onPressed: () {
+                          if (landscapePathPdf == '') {
+                            createFileOfPdfUrl(
+                                    '${myVariables.getMyObject.getBaseUrl}Appliecmr/genLDV/?destot_id=${widget.destot.getDestotId}')
+                                .then((f) {
+                              landscapePathPdf = f;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      PDFScreen(path: landscapePathPdf),
+                                ),
+                              );
+                            });
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    PDFScreen(path: landscapePathPdf),
+                              ),
+                            );
+                          }
+                        },
+                      ),
                       Row(
                         children: [
                           Text(widget.destot.getDestotName),
@@ -651,8 +654,6 @@ class _OrdreTransportScreenState extends State<OrdreTransportScreen> {
                                   ordretransport_id: widget
                                       .ordretransport.getOrdretransportId),
                             )),
-                        //print('resultat clonage'),
-                        // print(res_clonage)
                       },
                   icon: Icon(Icons.add_box))
             ])));

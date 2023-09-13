@@ -20,6 +20,7 @@ class AbstractModel {
   Future<int> update(datas) async {
     var primaryField = datas[primary];
     datas.remove(primary);
+    print(datas);
     try {
       final id = await SQLHelper.update(table, primaryField, datas, primary);
       return id;
