@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Loadingcreen extends StatefulWidget {
-  const Loadingcreen({Key? key}) : super(key: key);
-
+  const Loadingcreen({Key? key, required this.message}) : super(key: key);
+  final String message;
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
@@ -15,7 +15,7 @@ class _LoadingScreenState extends State<Loadingcreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white70,
         body: SingleChildScrollView(
@@ -30,7 +30,7 @@ class _LoadingScreenState extends State<Loadingcreen> {
                 children: [
                   SizedBox(height: 50),
                   Center(
-                    child: Text('En cours...'),
+                    child: Text(widget.message),
                   ),
                   SizedBox(height: 50),
                   Center(

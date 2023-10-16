@@ -45,12 +45,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCmrM5a36XPbJoR__OY-ukn60RLhgIlQEA',
-    appId: '1:584162305733:web:89fce6d102a86e2437b2ac',
+    appId: '1:584162305733:web:e4c4e7f685d4bd0d37b2ac',
     messagingSenderId: '584162305733',
     projectId: 'vialtic-ecmr',
     authDomain: 'vialtic-ecmr.firebaseapp.com',
     storageBucket: 'vialtic-ecmr.appspot.com',
-    measurementId: 'G-PTWNXXK5WS',
+    measurementId: 'G-HNZVD64PMN',
   );
 
   static const FirebaseOptions android = FirebaseOptions(

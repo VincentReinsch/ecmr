@@ -1,17 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cron/cron.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:vialticecmr/firebase_options.dart';
 import 'package:vialticecmr/model/ordretransport.dart';
 import 'package:vialticecmr/screen/AuthScreen.dart';
@@ -35,10 +35,19 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 );
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
+
 @pragma('vm:entry-point')
+void _enablePlatformOverrideForDesktop() {
+  if (!kIsWeb && (Platform.isWindows || Platform.isLinux)) {
+    debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+  }
+}
+
 Future<void> main() async {
   // firebase App initialize
   WidgetsFlutterBinding.ensureInitialized();
+  print('PLATEFORME');
+  print(DefaultFirebaseOptions.currentPlatform);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -72,9 +81,10 @@ Future<void> main() async {
   final theme = ThemeDecoder.decodeThemeData(themeJson);
 
   // Open the database and store the reference.
-  final database = openDatabase(
+  /*final database = openDatabase(
     join(await getDatabasesPath(), 'demo.db'),
-  );
+  );*/
+
   final tempDir = await getApplicationDocumentsDirectory();
   final tempPath = tempDir.path;
   MyVariables().basePath(tempPath);
@@ -97,7 +107,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final fcmToken = await FirebaseMessaging.instance.getToken();
   MyVariables().setToken(fcmToken!);
-
+  _enablePlatformOverrideForDesktop();
   runApp(MyApp(theme: theme!));
 }
 

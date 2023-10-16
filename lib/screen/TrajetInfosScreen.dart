@@ -180,7 +180,7 @@ class _TrajetInfosScreenState extends State<TrajetInfosScreen> {
                 context,
                 PageTransition(
                   type: PageTransitionType.bottomToTop,
-                  child: Loadingcreen(),
+                  child: Loadingcreen(message: 'Enregistrement...'),
                 ),
               ),
               widget.destot.setAdditionnalFields(destOtAdditionnalFields),

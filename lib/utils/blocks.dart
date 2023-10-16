@@ -29,7 +29,7 @@ Row iconBlock(
 }
 
 List<DropdownMenuItem<String>> getItemListFormTxt(String Texte) {
-  List items = Texte.split(';');
+  List items = Texte.split('|');
   List<DropdownMenuItem<String>> retour = [
     DropdownMenuItem<String>(
       value: '',
@@ -93,6 +93,7 @@ List<Widget> piedpageconnected(context) {
 
 Material tile(
     String? title, String? subtitle, IconData icon, ordreTransport, context) {
+  //getIconFromCss('far custom-class fa-abacus');
   return Material(
     type: MaterialType.canvas,
     color: Colors.white,

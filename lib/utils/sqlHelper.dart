@@ -1,10 +1,34 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart' as sql;
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 import 'package:vialticecmr/model/destot.dart';
 import 'package:vialticecmr/model/ordretransport.dart';
+
+class PlatformUtils {
+  static bool get isMobile {
+    if (kIsWeb) {
+      return false;
+    } else {
+      return Platform.isIOS || Platform.isAndroid;
+    }
+  }
+
+  static bool get isDesktop {
+    if (kIsWeb) {
+      return false;
+    } else {
+      return Platform.isLinux ||
+          Platform.isFuchsia ||
+          Platform.isWindows ||
+          Platform.isMacOS;
+    }
+  }
+}
 
 class SQLHelper {
   static Future<void> cleanTables() async {
@@ -153,6 +177,13 @@ class SQLHelper {
 
   static Future<sql.Database> db() async {
     //await sql.deleteDatabase('demo2.db');
+
+    print('ok windows ?');
+
+    if (kIsWeb) {
+      // Change default factory on the web
+      databaseFactory = databaseFactoryFfiWeb;
+    }
 
     var retour = await sql.openDatabase(
       'demo2.db',

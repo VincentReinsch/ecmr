@@ -1,13 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:hand_signature/signature.dart';
-import 'package:vialticecmr/utils/MyVariables.dart';
-import 'package:vialticecmr/utils/signature.dart' as signature;
 import 'package:flutter/services.dart';
+import 'package:hand_signature/signature.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vialticecmr/model/destot.dart';
+import 'package:vialticecmr/screen/LoadingScreen.dart';
+import 'package:vialticecmr/utils/MyVariables.dart';
 import 'package:vialticecmr/utils/network.dart';
+import 'package:vialticecmr/utils/signature.dart' as signature;
 
 HandSignatureControl control = HandSignatureControl(
   threshold: 0.01,
@@ -37,6 +39,8 @@ class _SignatureDestotScreenState extends State<SignatureDestotScreen> {
   void initState() {
     super.initState();
     control.clear();
+    imageCache.clear();
+    imageCache.clearLiveImages();
     svg.value = null;
     rawImage.value = null;
     rawImageFit.value = null;
@@ -229,15 +233,23 @@ class _SignatureDestotScreenState extends State<SignatureDestotScreen> {
                           Directory tempDir =
                               await getApplicationDocumentsDirectory();
                           String tempPath = tempDir.path;
-
-                          Network().setUserSignature(
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.bottomToTop,
+                              child: Loadingcreen(
+                                  message: 'Enregistrement signature...'),
+                            ),
+                          );
+                          await Network().setUserSignature(
                             '$tempPath/signature_${widget.destot.getDestotId}_${widget.type}.png',
                             'signature_destot_${widget.type}',
                             'ordretransport',
                             widget.destot.getOrdretransportId.toString(),
                             widget.destot.getDestotId.toString(),
                           );
-
+                          Navigator.pop(context);
+                          //
                           switch (widget.type) {
                             case 'enlDepart':
                               widget.destot.setExpSignature('oui');

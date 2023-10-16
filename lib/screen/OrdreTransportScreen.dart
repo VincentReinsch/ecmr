@@ -175,7 +175,15 @@ class _TrajetScreenState extends State<TrajetScreen> {
             break;
         }
       });
+      Navigator.push(
+        context,
+        PageTransition(
+          type: PageTransitionType.bottomToTop,
+          child: Loadingcreen(message: 'Enregistrement...'),
+        ),
+      );
       await Network().synchronise();
+      Navigator.pop(context);
     }
   }
 
@@ -208,11 +216,22 @@ class _TrajetScreenState extends State<TrajetScreen> {
         if (!mounted) return;
         setState(() {
           pictures0 = pictures;
-
+          print('sdfgsdfgsdfg');
+          Navigator.push(
+            context,
+            PageTransition(
+              type: PageTransitionType.bottomToTop,
+              child: Loadingcreen(message: 'Envoi...'),
+            ),
+          );
           for (var element in pictures0) {
-            Network().sendCmr(element, widget.destot.getDestotId,
-                widget.destot.getOrdretransportId);
+            Network()
+                .sendCmr(element, widget.destot.getDestotId,
+                    widget.destot.getOrdretransportId)
+                .then((value) => Navigator.pop(context));
           }
+          print('sdfgsdfgsdfg ok');
+          //Navigator.pop(context);
         });
       } catch (exception) {
         // Handle exception here
@@ -342,8 +361,9 @@ class _TrajetScreenState extends State<TrajetScreen> {
                             Navigator.push(
                                 context,
                                 PageTransition(
-                                    type: PageTransitionType.bottomToTop,
-                                    child: Loadingcreen()));
+                                  type: PageTransitionType.bottomToTop,
+                                  child: Loadingcreen(message: 'Génération...'),
+                                ));
                             createFileOfPdfUrl(
                                     '${myVariables.getMyObject.getBaseUrl}Appliecmr/genLDV/?destot_id=${widget.destot.getDestotId}')
                                 .then((f) {
