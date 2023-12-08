@@ -216,7 +216,7 @@ class _TrajetScreenState extends State<TrajetScreen> {
         if (!mounted) return;
         setState(() {
           pictures0 = pictures;
-          print('sdfgsdfgsdfg');
+
           Navigator.push(
             context,
             PageTransition(
@@ -230,7 +230,7 @@ class _TrajetScreenState extends State<TrajetScreen> {
                     widget.destot.getOrdretransportId)
                 .then((value) => Navigator.pop(context));
           }
-          print('sdfgsdfgsdfg ok');
+
           //Navigator.pop(context);
         });
       } catch (exception) {

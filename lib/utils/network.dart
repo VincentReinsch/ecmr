@@ -280,12 +280,16 @@ class Network {
     var myVariables = MyVariables();
     final cmd = imglib.Command()
       ..decodeImageFile(file)
-      ..writeToFile('${myVariables.getMyPath}thumbnail.png');
+      ..copyResize(width: 1500)
+      ..encodeJpg(quality: 60)
+      ..writeToFile('${myVariables.getMyPath}thumbnail.jpg');
     await cmd.executeThread();
     final bytes =
-        await File('${myVariables.getMyPath}thumbnail.png').readAsBytes();
+        await File('${myVariables.getMyPath}thumbnail.jpg').readAsBytes();
 
     if (myVariables.getMyObject.getBaseUrl != '') {
+      file = file.replaceAll('DOCUMENT_SCAN', 'scan_');
+
       Map<String, String> body = {
         'user_login': myVariables.getMyObject.getLogin,
         'user_password': myVariables.getMyObject.getPassword,

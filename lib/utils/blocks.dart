@@ -37,6 +37,7 @@ List<DropdownMenuItem<String>> getItemListFormTxt(String Texte) {
     ),
   ];
   items.forEach((element) {
+    print(element);
     retour.add(
       DropdownMenuItem<String>(
         value: element,
@@ -54,40 +55,56 @@ List<Widget> piedpageconnected(context) {
     await ordre.fetchJobs();
   }
 
+  var nom =
+      '${myService.getMyObject.getFirstName} ${myService.getMyObject.getLastName}';
+  if (nom.length > 15) {
+    nom = nom.substring(0, 15);
+  }
   return [
-    IconButton(
-        icon: Icon(Icons.circle,
-            color: myService.getConnected == true ? Colors.green : Colors.red),
-        onPressed: () {}),
-    Text(MyVariables().infoversion),
-    Text(
-        '${myService.getMyObject.getFirstName} ${myService.getMyObject.getLastName}'),
-    IconButton(
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(),
-      icon: const Icon(
-        Icons.exit_to_app,
-      ),
-      onPressed: () {
-        SQLHelper.cleanTables();
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/login', ModalRoute.withName('/login'));
-      },
-    ),
-    IconButton(
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(),
-      icon: const Icon(
-        Icons.settings,
-      ),
-      onPressed: () {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          '/account',
-          ModalRoute.withName('/'),
-        );
-      },
-    )
+    Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.only(
+          left: 0.0,
+        ),
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                icon: const Icon(
+                  Icons.exit_to_app,
+                ),
+                onPressed: () {
+                  SQLHelper.cleanTables();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/login', ModalRoute.withName('/login'));
+                },
+              ),
+              IconButton(
+                  icon: Icon(Icons.circle,
+                      color: myService.getConnected == true
+                          ? Colors.green
+                          : Colors.red),
+                  onPressed: () {}),
+              Text(MyVariables().infoversion),
+              Text(nom),
+              IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                icon: const Icon(
+                  Icons.settings,
+                ),
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/account',
+                    ModalRoute.withName('/'),
+                  );
+                },
+              )
+            ]))
   ];
 }
 

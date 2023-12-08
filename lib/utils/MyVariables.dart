@@ -114,7 +114,7 @@ class MyVariables {
 
   void setConnect(responseLogin) {
     if (responseLogin.runtimeType == Object) {
-      getMyObject.firstName = responseLogin['firstname'];
+      getMyObject.firstName = responseLogin.firstname;
       getMyObject.lastName = responseLogin['lastname'];
       getMyObject.tiersId = responseLogin['tiers_id'];
     } else {
