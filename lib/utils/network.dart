@@ -37,12 +37,8 @@ class Network {
 
   Future<Map<dynamic, dynamic>> login(
       {required String login, required String password}) async {
-    final httpsUri = Uri(
-        scheme: 'http',
-        host: _myVariables.getMyObject.getUrl,
-        path: '/appli/login',
-        fragment: '');
-
+    final httpsUri =
+        Uri.parse(_myVariables.getMyObject.getUrl + '/appli/login');
     final response = await http.post(
       httpsUri,
       headers: <String, String>{
@@ -169,14 +165,8 @@ class Network {
       return [];
     }
 
-    final httpsUri = Uri(
-      scheme: 'http',
-      host: myVariables.getMyObject.getBaseUrl
-          .replaceAll('http://', '')
-          .replaceAll('/', ''),
-      path: '/Appliecmr/updateTournee/',
-      fragment: '',
-    );
+    final httpsUri = Uri.parse(
+        myVariables.getMyObject.getBaseUrl + '/Appliecmr/updateTournee/');
     String lastUpd = await SQLHelper.getParameter('last_call');
     if (lastUpd == '') {
       DateTime now = DateTime.now().subtract(const Duration(days: 30));
@@ -227,14 +217,23 @@ class Network {
       return [];
     }
 
-    final httpsUri = Uri(
-      scheme: 'http',
-      host: myVariables.getMyObject.getBaseUrl
-          .replaceAll('http://', '')
-          .replaceAll('/', ''),
-      path: '/Appliecmr/updateTransport/',
-      fragment: '',
-    );
+    final httpsUri = myVariables.getMyObject.getBaseUrl.contains('https')
+        ? Uri(
+            scheme: 'https',
+            host: myVariables.getMyObject.getBaseUrl
+                .replaceAll('https://', '')
+                .replaceAll('/', ''),
+            path: '/Appliecmr/updateTransport/',
+            fragment: '',
+          )
+        : Uri(
+            scheme: 'http',
+            host: myVariables.getMyObject.getBaseUrl
+                .replaceAll('http://', '')
+                .replaceAll('/', ''),
+            path: '/Appliecmr/updateTransport/',
+            fragment: '',
+          );
     var liste = [];
     try {
       final response = await http.post(httpsUri, headers: <String, String>{

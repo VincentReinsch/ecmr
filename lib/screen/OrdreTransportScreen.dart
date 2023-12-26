@@ -217,18 +217,21 @@ class _TrajetScreenState extends State<TrajetScreen> {
         setState(() {
           pictures0 = pictures;
 
-          Navigator.push(
-            context,
-            PageTransition(
-              type: PageTransitionType.bottomToTop,
-              child: Loadingcreen(message: 'Envoi...'),
-            ),
-          );
-          for (var element in pictures0) {
-            Network()
-                .sendCmr(element, widget.destot.getDestotId,
-                    widget.destot.getOrdretransportId)
-                .then((value) => Navigator.pop(context));
+          if (pictures0.length != 0) {
+            print('ok----');
+            Navigator.push(
+              context,
+              PageTransition(
+                type: PageTransitionType.bottomToTop,
+                child: Loadingcreen(message: 'Envoi...'),
+              ),
+            );
+            for (var element in pictures0) {
+              Network()
+                  .sendCmr(element, widget.destot.getDestotId,
+                      widget.destot.getOrdretransportId)
+                  .then((value) => Navigator.pop(context));
+            }
           }
 
           //Navigator.pop(context);
