@@ -46,8 +46,7 @@ void _enablePlatformOverrideForDesktop() {
 Future<void> main() async {
   // firebase App initialize
   WidgetsFlutterBinding.ensureInitialized();
-  print('PLATEFORME');
-  print(DefaultFirebaseOptions.currentPlatform);
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

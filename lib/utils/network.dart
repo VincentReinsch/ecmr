@@ -166,7 +166,7 @@ class Network {
     }
 
     final httpsUri = Uri.parse(
-        myVariables.getMyObject.getBaseUrl + '/Appliecmr/updateTournee/');
+        myVariables.getMyObject.getBaseUrl + 'Appliecmr/updateTournee/');
     String lastUpd = await SQLHelper.getParameter('last_call');
     if (lastUpd == '') {
       DateTime now = DateTime.now().subtract(const Duration(days: 30));
@@ -191,23 +191,28 @@ class Network {
       try {
         jsonResponse = json.decode(response.body);
       } catch (e) {}
-
+      print('tournees');
+      print(jsonResponse);
       if (jsonResponse['objects'] != null) {
         jsonResponse['objects'].forEach((song, test) async => {
               liste.add(test),
             });
-
+        print('ok pou rliste');
         return liste;
       }
       myVariables.setConnected(true);
       //
+      print('ok pou rliste vide');
       return liste;
     } on SocketException {
+      print('socket');
       myVariables.setConnected(false);
     } catch (e) {
+      print('catch');
       myVariables.setConnected(false);
       // TODO: handle all other exceptions just in case
     }
+    print('ok pou rliste');
     return liste;
   }
 
@@ -316,12 +321,6 @@ class Network {
     var myVariables = MyVariables();
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-    // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    //AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    // print('Running on ${androidInfo.model}'); // e.g. "Moto G (4)"
-    //print('Running on ${androidInfo.version.release}'); // e.g. "Moto G (4)"
-    //print('Running on ${androidInfo.model}'); // e.g. "Moto G (4)"
-
     Map<String, String> body = {
       'user_login': myVariables.getMyObject.getLogin,
       'user_password': myVariables.getMyObject.getPassword,
@@ -353,7 +352,7 @@ class Network {
 
   Future synchronise() async {
     var myVariables = MyVariables();
-    print('synchronisation');
+
     if (myVariables.getMyObject.getBaseUrl != '' &&
         myVariables.getMyObject.getTiersId.toString() != 0) {
       String lastDate = await SQLHelper.gettLastDate();
@@ -372,7 +371,6 @@ class Network {
 
       var ordres = {};
       for (var element in response) {
-        print(element['ordretransport_id']);
         final dests = await SQLHelper.getDestOts(element['ordretransport_id']);
         List destOts = [];
         for (var destot in dests) {

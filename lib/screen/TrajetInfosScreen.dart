@@ -49,7 +49,7 @@ class _TrajetInfosScreenState extends State<TrajetInfosScreen> {
         ));
       }
       Widget content = Text('');
-      print(element.getValue);
+
       switch (element.getType) {
         case 'text':
         case 'numeric':
@@ -132,7 +132,7 @@ class _TrajetInfosScreenState extends State<TrajetInfosScreen> {
         case 'select':
           List<DropdownMenuItem<String>> items =
               getItemListFormTxt(element.getParams);
-          print(items);
+
           content =
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(element.getName),

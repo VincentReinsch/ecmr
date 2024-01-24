@@ -132,7 +132,6 @@ Future<String> createFileOfPdfUrl(String url) async {
   var myVariables = MyVariables();
   String fichier = '';
   try {
-    print('appel pdf');
     var request1 = await http.post(Uri.parse(url), headers: <String, String>{
       'Content-Type': 'application/x-www-form-urlencoded',
     }, body: <String, String>{
@@ -158,10 +157,7 @@ Future<String> createFileOfPdfUrl(String url) async {
 
     await file.writeAsBytes(bytes, flush: true);
     completer.complete(file);
-  } catch (e) {
-    print(e);
-    print('ca na pas marché');
-  }
+  } catch (e) {}
 
   return fichier;
 }

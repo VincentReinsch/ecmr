@@ -218,7 +218,6 @@ class _TrajetScreenState extends State<TrajetScreen> {
           pictures0 = pictures;
 
           if (pictures0.length != 0) {
-            print('ok----');
             Navigator.push(
               context,
               PageTransition(
@@ -777,7 +776,7 @@ class _OrdreTransportScreenState extends State<OrdreTransportScreen> {
         ),
       ),
     );
-
+    print(widget.ordretransport.getTourneeId);
     //Construction du widget contenu
     return DefaultTabController(
       length: myTabs.length,

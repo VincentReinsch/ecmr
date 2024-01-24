@@ -178,8 +178,6 @@ class SQLHelper {
   static Future<sql.Database> db() async {
     //await sql.deleteDatabase('demo2.db');
 
-    print('ok windows ?');
-
     if (kIsWeb) {
       // Change default factory on the web
       databaseFactory = databaseFactoryFfiWeb;
