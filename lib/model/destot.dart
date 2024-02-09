@@ -6,14 +6,37 @@ import 'package:vialticecmr/utils/sqlHelper.dart';
 import 'ordretransport.dart';
 
 class Emballage {
+  String _emballageId = '0';
   String _emballageName = '';
-  double _quantite = 0;
+  String _quantite = '0';
   Emballage(Map element) {
+    _emballageId = element['emballage_id'];
     _emballageName = element['emballage_name'];
-    _quantite = double.parse(element['quantite']);
+    _quantite = element['quantite'];
   }
+  String get getEmballageId => _emballageId;
   String get getEmballageName => _emballageName;
-  double get getQuantite => _quantite;
+  String get getQuantite => _quantite;
+
+  set quantite(String value) => _quantite = value;
+}
+
+String dOEmbToJson(List<Emballage> value) {
+  var data = [];
+  for (var element in value) {
+    data.add(dOEmbfromJson(element));
+  }
+
+  return json.encode(data);
+}
+
+Map dOEmbfromJson(Emballage element) {
+  var retour = {
+    'emballage_id': element._emballageId,
+    'quantite': element._quantite,
+    'emballage_name': element._emballageName
+  };
+  return retour;
 }
 
 class DestOtAdditionnalField {
@@ -295,7 +318,7 @@ class DestOt extends AbstractModel {
   String get getTracteurImmat => _tracteurImmat;
   String get getRemorqueImmat => _remorqueImmat;
 
-  List get getEmballages => _emballages;
+  List<Emballage> get getEmballages => _emballages;
   List<DestOtAdditionnalField> get getAdditionnalFields => _additionnalFields;
 
   String get getAdditionnalFieldsTxt => _additionnalFieldsTxt;
@@ -358,6 +381,9 @@ class DestOt extends AbstractModel {
   void setTracteurImmat(String value) => _tracteurImmat = value;
 
   void setRemorqueImmat(String value) => _remorqueImmat = value;
+
+  void setEmballages(List<Emballage> value) =>
+      {_emballages = value, _emballagesTxt = dOEmbToJson(value)};
 
   void setAdditionnalFields(List<DestOtAdditionnalField> value) =>
       {_additionnalFields = value, _additionnalFieldsTxt = dOAIToJson(value)};
@@ -461,7 +487,13 @@ class DestOt extends AbstractModel {
     _livDepartLongitude = jsonData['liv_depart_longitude'];
     _destotName = jsonData['destot_name'];
     _emballageName = jsonData['emballage_name'];
+    print('Emballages');
+    print(jsonData['emballages']);
+    var data_emb = json.decode(jsonData['emballages']);
 
+    data_emb.forEach((element) => {_emballages.add(Emballage(element))});
+
+    //print(jsonData['emballages']);
     _enlPhone = jsonData['enl_phone'];
     _enlLastname = jsonData['enl_lastname'];
     _enlAddress = jsonData['enl_address'];
@@ -580,6 +612,10 @@ class DestOt extends AbstractModel {
 
   void setAdditionnalFieldsTxt(String encode) {
     _additionnalFieldsTxt = encode;
+  }
+
+  void setEmballagesTxt(String encode) {
+    _emballagesTxt = encode;
   }
 
   @override

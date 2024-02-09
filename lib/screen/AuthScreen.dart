@@ -1,17 +1,16 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:images_picker/images_picker.dart';
+import 'package:scan/scan.dart';
 import 'package:vialticecmr/model/ordretransport.dart';
-
 import 'package:vialticecmr/screen/ExploitationScreen.dart';
 import 'package:vialticecmr/screen/ScanPageScreen.dart';
 import 'package:vialticecmr/utils/MyVariables.dart';
 import 'package:vialticecmr/utils/network.dart';
-
-import 'package:crypto/crypto.dart';
-import 'package:scan/scan.dart';
-import 'package:images_picker/images_picker.dart';
 import 'package:vialticecmr/utils/sqlHelper.dart';
-import 'dart:convert';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -45,6 +44,7 @@ class _AuthScreenState extends State<AuthScreen> {
     });
     var str = await SQLHelper.getLastBase();
     var myService = MyVariables();
+
     if (str != '') {
       var dataJson = json.decode(str);
       myService.baseUrl(dataJson['url']);

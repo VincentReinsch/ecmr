@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:vialticecmr/model/destot.dart';
 import 'package:vialticecmr/model/ordretransport.dart';
+import 'package:vialticecmr/screen/EmballagesScreen.dart';
 import 'package:vialticecmr/screen/LoadingScreen.dart';
 import 'package:vialticecmr/screen/SignatureDestotScreen.dart';
 import 'package:vialticecmr/screen/TourneeScreen.dart';
@@ -280,6 +281,12 @@ class _TrajetScreenState extends State<TrajetScreen> {
       ));
     }
 
+    List<Widget> fields_emb = [];
+
+    for (var element in widget.destot.getEmballages) {
+      fields_emb.add(Text(
+          element.getQuantite.toString() + ' ' + element.getEmballageName));
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -396,11 +403,31 @@ class _TrajetScreenState extends State<TrajetScreen> {
                         ],
                       ),
                       Row(
-                        children: [
-                          Text(
-                              'Marchandises: ${widget.destot.getQuantite} ${widget.destot.getEmballageName}'),
-                        ],
-                      ),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Marchandises: '),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: fields_emb,
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(10.0),
+                              ),
+                              onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.bottomToTop,
+                                        child: EmballagesScreen(
+                                          destot: widget.destot,
+                                        ))),
+                              },
+                              child:
+                                  Text(textAlign: TextAlign.center, 'Modifier'),
+                            ),
+                          ]),
                       Row(
                         children: [
                           Text('${widget.destot.getMetre} mètres linéaires'),
@@ -776,7 +803,7 @@ class _OrdreTransportScreenState extends State<OrdreTransportScreen> {
         ),
       ),
     );
-    print(widget.ordretransport.getTourneeId);
+
     //Construction du widget contenu
     return DefaultTabController(
       length: myTabs.length,

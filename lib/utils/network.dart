@@ -18,7 +18,7 @@ class Network {
   final MyVariables _myVariables = MyVariables();
   Future<String> cloneTrajet({required int destot_id}) async {
     final response = await http.post(
-      Uri.parse(_myVariables.getMyObject.getBaseUrl + 'appliecmr/clonage'),
+      Uri.parse('${_myVariables.getMyObject.getBaseUrl}appliecmr/clonage'),
       headers: <String, String>{
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -38,7 +38,8 @@ class Network {
   Future<Map<dynamic, dynamic>> login(
       {required String login, required String password}) async {
     final httpsUri =
-        Uri.parse(_myVariables.getMyObject.getUrl + '/appli/login');
+        Uri.parse('${_myVariables.getMyObject.getUrl}/appli/login');
+
     final response = await http.post(
       httpsUri,
       headers: <String, String>{
@@ -166,7 +167,7 @@ class Network {
     }
 
     final httpsUri = Uri.parse(
-        myVariables.getMyObject.getBaseUrl + 'Appliecmr/updateTournee/');
+        '${myVariables.getMyObject.getBaseUrl}Appliecmr/updateTournee/');
     String lastUpd = await SQLHelper.getParameter('last_call');
     if (lastUpd == '') {
       DateTime now = DateTime.now().subtract(const Duration(days: 30));
@@ -388,6 +389,8 @@ class Network {
             'liv_arrivee_longitude': destot['liv_arrivee_longitude'],
             'liv_depart_latitude': destot['liv_depart_latitude'],
             'destot_additionnal_fields': destot['additionnalFieldsTxt'],
+            'destot_emballages': destot['emballages'],
+            'nb_emballages': destot['quantite'],
             // 'dest_signature': destot['dest_signature'],
             //'exp_signature': destot['exp_signature'],
             'dest_signature_nom': destot['dest_signature_nom'],

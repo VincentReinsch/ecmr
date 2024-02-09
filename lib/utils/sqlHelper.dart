@@ -372,7 +372,7 @@ class SQLHelper {
 
   static Future<int> setDestOt(DestOt data) async {
     final db = await SQLHelper.db();
-
+    print(data.toJson());
     final result = await db.update('destot', data.toJson(),
         where: "destot_id = ?", whereArgs: [data.getDestotId]);
 
