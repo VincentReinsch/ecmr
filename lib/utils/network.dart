@@ -192,28 +192,25 @@ class Network {
       try {
         jsonResponse = json.decode(response.body);
       } catch (e) {}
-      print('tournees');
-      print(jsonResponse);
+
       if (jsonResponse['objects'] != null) {
         jsonResponse['objects'].forEach((song, test) async => {
               liste.add(test),
             });
-        print('ok pou rliste');
+
         return liste;
       }
       myVariables.setConnected(true);
       //
-      print('ok pou rliste vide');
+
       return liste;
     } on SocketException {
-      print('socket');
       myVariables.setConnected(false);
     } catch (e) {
-      print('catch');
       myVariables.setConnected(false);
       // TODO: handle all other exceptions just in case
     }
-    print('ok pou rliste');
+
     return liste;
   }
 
@@ -388,6 +385,7 @@ class Network {
             'liv_arrivee_latitude': destot['liv_arrivee_latitude'],
             'liv_arrivee_longitude': destot['liv_arrivee_longitude'],
             'liv_depart_latitude': destot['liv_depart_latitude'],
+            'liv_depart_longitude': destot['liv_depart_longitude'],
             'destot_additionnal_fields': destot['additionnalFieldsTxt'],
             'destot_emballages': destot['emballages'],
             'nb_emballages': destot['quantite'],

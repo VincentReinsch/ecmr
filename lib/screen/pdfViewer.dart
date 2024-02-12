@@ -131,10 +131,7 @@ Future<String> createFileOfPdfUrl(String url) async {
   Completer<File> completer = Completer();
   var myVariables = MyVariables();
   String fichier = '';
-  print(Uri.parse(url));
-  print(myVariables.getMyObject.getLogin);
-  print(myVariables.getMyObject.getPassword);
-  print(myVariables.getMyObject.getTiersId.toString());
+
   try {
     var request1 = await http.post(Uri.parse(url), headers: <String, String>{
       'Content-Type': 'application/x-www-form-urlencoded',

@@ -21,7 +21,7 @@ class _EmballagesScreenState extends State<EmballagesScreen> {
   Widget build(BuildContext context) {
     List<Widget> fields = [];
     final List<Emballage> datas = widget.destot.getEmballages;
-    print(datas);
+
     var emballagesFields = datas;
     fields.add(const Text(
         style: TextStyle(
@@ -30,13 +30,19 @@ class _EmballagesScreenState extends State<EmballagesScreen> {
           fontSize: 16.0,
         ),
         'Modifier les quantités'));
+
+    final Map<String, TextEditingController> liste_controlleurs = {};
+
     for (var element in datas) {
+      liste_controlleurs[element.getEmballageId] = TextEditingController();
+      liste_controlleurs[element.getEmballageId]!.text = element.getQuantite;
       fields.add(Row(children: [
         ConstrainedBox(
           constraints: BoxConstraints.tight(const Size(50, 50)),
           child: TextFormField(
             keyboardType: TextInputType.number,
-            initialValue: element.getQuantite,
+            controller: liste_controlleurs[element.getEmballageId],
+            onTap: () => liste_controlleurs[element.getEmballageId]!.text = '',
             onChanged: (value) => setState(
               () => element.quantite = value,
             ),

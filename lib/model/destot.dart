@@ -487,8 +487,7 @@ class DestOt extends AbstractModel {
     _livDepartLongitude = jsonData['liv_depart_longitude'];
     _destotName = jsonData['destot_name'];
     _emballageName = jsonData['emballage_name'];
-    print('Emballages');
-    print(jsonData['emballages']);
+
     var data_emb = json.decode(jsonData['emballages']);
 
     data_emb.forEach((element) => {_emballages.add(Emballage(element))});
