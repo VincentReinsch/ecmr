@@ -25,6 +25,7 @@ class _OrdreTransportLandingScreenState
 
   getTrajetInfos() async {
     var ordre = OrdreTransport(ordretransportId: widget.ordretransportId);
+    print(ordre);
     ordre = await ordre.getItem();
     if (ordre.getOrdretransportId == 0) {
       Navigator.push(

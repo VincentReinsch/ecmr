@@ -445,7 +445,7 @@ class _TrajetScreenState extends State<TrajetScreen> {
                   child: Column(
                     children: [
                       Text(
-                        'CHARGEMENT',
+                        'CHARGEMENT ',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -454,19 +454,45 @@ class _TrajetScreenState extends State<TrajetScreen> {
                       ),
                       Column(
                         children: [
-                          Row(
+                          Table(
                             children: [
-                              const Icon(Icons.view_array),
-                              Text(widget.destot.getEnlLastname),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Icon(Icons.calendar_month),
-                              Text('Le ${DateFormat('dd/MM/y HH:mm').format(
-                                    DateTime.parse(
-                                        widget.destot.getDateEnlevement),
-                                  ).replaceAll(' 00:00', '')}'),
+                              TableRow(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Icon(Icons.view_array),
+                                          Text(widget.destot.getEnlLastname),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Icon(Icons.calendar_month),
+                                          Text(
+                                            'Le ${DateFormat('dd/MM/y HH:mm').format(
+                                                  DateTime.parse(widget.destot
+                                                      .getDateEnlevement),
+                                                ).replaceAll(' 00:00', '')}',
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${widget.destot.getRefEnl}',
+                                      ),
+                                      Text('${widget.destot.getImpEnl}'),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ],
                           ),
                           Row(
@@ -523,19 +549,41 @@ class _TrajetScreenState extends State<TrajetScreen> {
                             fontSize: 15,
                             color: Theme.of(context).colorScheme.primary,
                           )),
+                      Table(
+                        children: [
+                          TableRow(
+                            children: [
+                              Column(
+                                children: [
+                                  Row(children: [
+                                    const Icon(Icons.view_array),
+                                    Text(widget.destot.getLivLastname),
+                                  ]),
+                                  Row(children: [
+                                    const Icon(Icons.calendar_month),
+                                    Text(
+                                        'Le ${DateFormat('dd/MM/y HH:mm').format(
+                                              DateTime.parse(widget
+                                                  .destot.getDateLivraison),
+                                            ).replaceAll(' 00:00', '')}'),
+                                  ]),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${widget.destot.getRefLiv}',
+                                  ),
+                                  Text('${widget.destot.getImpLiv}'),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                       Column(
                         children: [
-                          Row(children: [
-                            const Icon(Icons.view_array),
-                            Text(widget.destot.getLivLastname),
-                          ]),
-                          Row(children: [
-                            const Icon(Icons.calendar_month),
-                            Text('Le ${DateFormat('dd/MM/y HH:mm').format(
-                                  DateTime.parse(
-                                      widget.destot.getDateLivraison),
-                                ).replaceAll(' 00:00', '')}'),
-                          ]),
                           Row(children: [
                             const Icon(Icons.place),
                             Flexible(

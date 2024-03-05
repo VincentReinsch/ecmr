@@ -26,6 +26,12 @@ class OrdreTransport extends AbstractModel {
   String _dateLivraison = '0000-00-00 00:00:00';
   String _instruction = '';
   String _refCom = '';
+  String _refEnl = '';
+  String _impEnl = '';
+  String _refLiv = '';
+  String _impLiv = '';
+  String _instructions = '';
+
   String _commentaire = '';
   String _commentaireConducteur = '';
   String _dateSend = '0000-00-00 00:00:00';
@@ -56,45 +62,46 @@ class OrdreTransport extends AbstractModel {
   int _nbDests = 0;
   List<DestOt> _destots = [];
 
-  OrdreTransport(
-      {required int ordretransportId,
-      int segOrdretransportId = 0,
-      String numOt = '',
-      String tracteurImmat = '',
-      String remorqueImmat = '',
-      String dateEnlevement = '0000-00-00 00:00:00',
-      String dateLivraison = '0000-00-00 00:00:00',
-      String instruction = '',
-      String refCom = '',
-      String commentaire = '',
-      String commentaireConducteur = '',
-      String dateSend = '0000-00-00 00:00:00',
-      String dateRead = '0000-00-00 00:00:00',
-      String donneurordreName = '',
-      String donneurordreAddress = '',
-      String donneurordreAddressComp = '',
-      String donneurordreZipcode = '',
-      String donneurordreCity = '',
-      String donneurordreCountry = '',
-      String expInitialName = '',
-      String expInitialAddress = '',
-      String expInitialAddressComp = '',
-      String expInitialZipcode = '',
-      String expInitialCity = '',
-      String expInitialCountry = '',
-      String destFinalName = '',
-      String destFinalAddress = '',
-      String destFinalAddressComp = '',
-      String destFinalZipcode = '',
-      String destFinalCity = '',
-      String destFinalCountry = '',
-      bool isDeleted = false,
-      bool isClonable = false,
-      int nbDests = 0,
-      int tourneeId = 0,
-      int sensEnl = 0
-      //List<DestOt> destots = [],
-      }) {
+  OrdreTransport({
+    required int ordretransportId,
+    int segOrdretransportId = 0,
+    String numOt = '',
+    String tracteurImmat = '',
+    String remorqueImmat = '',
+    String dateEnlevement = '0000-00-00 00:00:00',
+    String dateLivraison = '0000-00-00 00:00:00',
+    String instruction = '',
+    String refCom = '',
+    String commentaire = '',
+    String commentaireConducteur = '',
+    String dateSend = '0000-00-00 00:00:00',
+    String dateRead = '0000-00-00 00:00:00',
+    String donneurordreName = '',
+    String donneurordreAddress = '',
+    String donneurordreAddressComp = '',
+    String donneurordreZipcode = '',
+    String donneurordreCity = '',
+    String donneurordreCountry = '',
+    String expInitialName = '',
+    String expInitialAddress = '',
+    String expInitialAddressComp = '',
+    String expInitialZipcode = '',
+    String expInitialCity = '',
+    String expInitialCountry = '',
+    String destFinalName = '',
+    String destFinalAddress = '',
+    String destFinalAddressComp = '',
+    String destFinalZipcode = '',
+    String destFinalCity = '',
+    String destFinalCountry = '',
+    bool isDeleted = false,
+    bool isClonable = false,
+    int nbDests = 0,
+    int tourneeId = 0,
+    int sensEnl = 0,
+
+    //List<DestOt> destots = [],
+  }) {
     _ordretransportId = ordretransportId;
     _segOrdretransportId = segOrdretransportId;
     _numOt = numOt;
@@ -174,6 +181,7 @@ class OrdreTransport extends AbstractModel {
   bool get getIsDeleted => _isDeleted;
   bool get getIsClonable => _isClonable;
   int get getNbDests => _nbDests;
+
   List<DestOt> get destots => _destots;
 
   //set destot_id(int value) => _destot_id = value;
@@ -217,6 +225,7 @@ class OrdreTransport extends AbstractModel {
 
   set tourneeId(int value) => _tourneeId = value;
   set sensEnl(int value) => _sensEnl = value;
+
   //set destots(DestOt value) => _destots[] = value;
 
   // create the user object from json input
@@ -347,6 +356,7 @@ class OrdreTransport extends AbstractModel {
     _nbDests = json['nb_dests'];
     _tourneeId = json['tournee_id'];
     _sensEnl = json['sens_enl'];
+
     return this;
   }
 

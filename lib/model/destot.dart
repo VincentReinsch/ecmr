@@ -10,7 +10,9 @@ class Emballage {
   String _emballageName = '';
   String _quantite = '0';
   Emballage(Map element) {
-    _emballageId = element['emballage_id'];
+    print(element);
+    _emballageId =
+        element['emballage_id'] != null ? element['emballage_id'] : '0';
     _emballageName = element['emballage_name'];
     _quantite = element['quantite'];
   }
@@ -101,6 +103,8 @@ class DestOt extends AbstractModel {
 
   String _refLiv = '';
   String _impLiv = '';
+  String _refEnl = '';
+  String _impEnl = '';
 
   String _enlArrivee = '2023-01-27 10:00:00';
   String _enlDepart = '0000-00-00 00:00:00';
@@ -166,6 +170,8 @@ class DestOt extends AbstractModel {
     String dateLivraison = '0000-00-00 00:00:00',
     String refLiv = '',
     String impLiv = '',
+    String refEnl = '',
+    String impEnl = '',
     String enlArrivee = '0000-00-00 00:00:00',
     String enlDepart = '0000-00-00 00:00:00',
     String livArrivee = '0000-00-00 00:00:00',
@@ -217,7 +223,8 @@ class DestOt extends AbstractModel {
 
     _refLiv = refLiv;
     _impLiv = impLiv;
-
+    _refEnl = refEnl;
+    _impEnl = impEnl;
     _enlArrivee = enlArrivee;
     _enlDepart = enlDepart;
     _livArrivee = livArrivee;
@@ -274,6 +281,8 @@ class DestOt extends AbstractModel {
 
   String get getRefLiv => _refLiv;
   String get getImpLiv => _impLiv;
+  String get getRefEnl => _refEnl;
+  String get getImpEnl => _impEnl;
 
   String get getEnlArrivee => _enlArrivee;
   String get getEnlDepart => _enlDepart;
@@ -337,6 +346,8 @@ class DestOt extends AbstractModel {
 
   set refLiv(String value) => _refLiv = value;
   set impLiv(String value) => _impLiv = value;
+  set refEnl(String value) => _refEnl = value;
+  set impEnl(String value) => _impEnl = value;
 
   set enlArrivee(String value) => _enlArrivee = value;
   set enlDepart(String value) => _enlDepart = value;
@@ -404,6 +415,8 @@ class DestOt extends AbstractModel {
 
     _refLiv = jsonData['ref_liv'];
     _impLiv = jsonData['imp_liv'];
+    _refEnl = jsonData['ref_enl'];
+    _impEnl = jsonData['imp_enl'];
 
     _enlArrivee = jsonData['enl_arrivee'];
     _enlDepart = jsonData['enl_depart'];
@@ -470,6 +483,8 @@ class DestOt extends AbstractModel {
 
     _refLiv = jsonData['ref_liv'];
     _impLiv = jsonData['imp_liv'];
+    _refEnl = jsonData['ref_enl'];
+    _impEnl = jsonData['imp_enl'];
 
     _enlArrivee = jsonData['enl_arrivee'];
     _enlDepart = jsonData['enl_depart'];
@@ -545,6 +560,8 @@ class DestOt extends AbstractModel {
 
     data['ref_liv'] = _refLiv;
     data['imp_liv'] = _impLiv;
+    data['ref_enl'] = _refEnl;
+    data['imp_enl'] = _impEnl;
 
     data['enl_arrivee'] = _enlArrivee;
     data['enl_depart'] = _enlDepart;

@@ -177,6 +177,7 @@ class Network {
     }
 
     var liste = [];
+
     try {
       final response = await http.post(httpsUri, headers: <String, String>{
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -350,7 +351,8 @@ class Network {
 
   Future synchronise() async {
     var myVariables = MyVariables();
-
+    print(myVariables.getMyObject.getPassword);
+    print(myVariables.getMyObject.getTiersId.toString());
     if (myVariables.getMyObject.getBaseUrl != '' &&
         myVariables.getMyObject.getTiersId.toString() != 0) {
       String lastDate = await SQLHelper.gettLastDate();
